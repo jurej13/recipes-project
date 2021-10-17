@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
-const { recipePost, recipesGet, recipesPut, recipeDelete } = require("../controllers/recipes");
+const { recipePost, recipesGet, recipesPut, recipeDelete, recipeGetOne } = require("../controllers/recipes");
 const { existRecipeId } = require("../helpers/db-validator");
 const { validarCampos } = require("../middlewares/validar-campos");
 
@@ -17,6 +17,12 @@ router.post('/',[
 ],recipePost)
 // GET
 router.get('/',recipesGet)
+// GET ONE RECIPE
+router.get('/:id',[
+    check('id','No es un ID valido.').isMongoId(),
+    check('id').custom(existRecipeId),
+    validarCampos
+],recipeGetOne)
 // UPDATE
 router.put('/:id',[
     check('id','Id incorrect.').isMongoId(),

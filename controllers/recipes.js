@@ -5,8 +5,8 @@ const Recipes = require("../models/recypes");
 
 // POST
 const recipePost = async (req=request,res=response) => {
-    const {recipe_name,ingredients,preparation} = req.body;
-    const recipe = new Recipes({recipe_name,ingredients,preparation})
+    const {recipe_name,ingredients,cooked_before,preparation} = req.body;
+    const recipe = new Recipes({recipe_name,ingredients,preparation,cooked_before})
     await recipe.save()
     res.json({
         recipe,
@@ -24,6 +24,14 @@ const recipesGet = async (req=request,res=response) => {
             recipes
             // msg:'Cantidad de registros en la bd:',
         });
+}
+// GET only one recipe
+const recipeGetOne = async (req=request,res=response) => {
+    const {id} = req.params;
+    const recipe = await Recipes.findById(id)
+    res.json({
+        recipe
+    })
 }
 // UPDATE
 const recipesPut = async(req=request,res=response)=> {
@@ -49,5 +57,6 @@ module.exports={
     recipePost,
     recipesGet,
     recipesPut,
-    recipeDelete
+    recipeDelete,
+    recipeGetOne
 }
